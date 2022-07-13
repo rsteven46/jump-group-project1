@@ -48,6 +48,39 @@ public class TrackerDAO implements DAO<Tracker> {
 		return tracker;
 	}
 
+	public List<Tracker> findByUserId(int userID) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
+		List<Tracker> trackerList = new ArrayList<>();
+
+		try {
+
+			query = "SELECT * FROM tracker WHERE userID = ?";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, userID);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				Tracker tracker = new Tracker();
+				tracker.setUserID(rs.getInt(1));
+				tracker.setBookID(rs.getInt(2));
+
+				trackerList.add(tracker);
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return trackerList;
+	}
+
 	@Override
 	public boolean create(Tracker entity) {
 		PreparedStatement pstmt = null;
@@ -129,7 +162,6 @@ public class TrackerDAO implements DAO<Tracker> {
 			e.printStackTrace();
 		}
 
-
 		return false;
 	}
 
@@ -164,7 +196,5 @@ public class TrackerDAO implements DAO<Tracker> {
 		return trackerList;
 
 	}
-
-	
 
 }
