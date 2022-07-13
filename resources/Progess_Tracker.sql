@@ -1,4 +1,4 @@
-#CREATE DATABASE ProgressTracker;
+CREATE DATABASE ProgressTracker;
 
 USE ProgressTracker;
 

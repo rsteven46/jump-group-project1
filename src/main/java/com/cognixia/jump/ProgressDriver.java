@@ -1,4 +1,4 @@
-package com.cognixia.jump.menu;
+package com.cognixia.jump;
 
 public class ProgressDriver {
 

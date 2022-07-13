@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cognixia.jump.ConnectionManager.ConnectionManager;
@@ -111,7 +112,6 @@ public class TrackerDAO implements DAO<Tracker> {
 
 			System.out.println("Tracker " + entity + " removed.");
 
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -157,8 +157,33 @@ public class TrackerDAO implements DAO<Tracker> {
 		return false;
 
 	public List<Tracker> findAll() {
-		//Not needed at the moment
-		return null;
+
+		List<Tracker> trackerList = new ArrayList<>();
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
+
+		try {
+			query = "SELECT * FROM progressTracker";
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				Tracker tracker = new Tracker();
+				tracker.setUserID(rs.getInt(1));
+				tracker.setBookID(rs.getInt(2));
+
+				trackerList.add(tracker);
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return trackerList;
 
 	}
 
