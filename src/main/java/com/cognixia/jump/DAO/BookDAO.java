@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.cognixia.jump.model.Book;
 
+
+
 public class BookDAO implements DAO<Book>{
 
 	@Override
@@ -29,7 +31,5 @@ public class BookDAO implements DAO<Book>{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	
 
 }

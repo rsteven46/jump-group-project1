@@ -6,7 +6,7 @@ import java.util.List;
 public interface DAO<T extends Serializable> {
 	
 	List<T> findAll();
-	
+
 
 	boolean create(T entity);
 	
