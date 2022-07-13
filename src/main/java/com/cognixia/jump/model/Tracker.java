@@ -12,7 +12,7 @@ public class Tracker implements Serializable {
 
 	public Tracker() {
 
-		this(0, 0, "N/A");
+		this(0, 0, "Not Started");
 
 	}
 

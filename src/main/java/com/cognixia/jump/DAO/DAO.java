@@ -5,14 +5,12 @@ import java.util.List;
 
 public interface DAO<T extends Serializable> {
 	
-	T findById(long id);
-	
-	T findByName(String name);
-	
 	List<T> findAll();
 	
-	boolean addStatus(T entity);
+	boolean create(T entity);
 	
-	boolean updateStatus(T entity);
+	boolean remove(T entity);
+	
+	boolean update(T entity);
 	
 }
