@@ -1,10 +1,14 @@
 package com.cognixia.jump.menu;
 
+import java.util.Scanner;
+
+import com.cognixia.jump.DAO.UserDAO;
+import com.cognixia.jump.model.User;
+
 public class ProgressDriver {
 
 	public static void main(String[] args) {
-		
-		
+
 	}
 
 }

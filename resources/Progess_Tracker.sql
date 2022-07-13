@@ -4,7 +4,7 @@ USE ProgressTracker;
 
 CREATE TABLE user (
 userID int auto_increment PRIMARY KEY,
-username varchar(255),
+username varchar(255) UNIQUE,
 passwd varchar(30)
 );
 
@@ -81,11 +81,3 @@ VALUES (2, 5, "Not started");
 
 INSERT INTO tracker (userID, bookID, progressStatus)
 VALUES (3, 10, "Not started");
-
-INSERT INTO tracker (userID, bookID, progressStatus)
-VALUES (3, 10, "Not started");
-
-
-
-
-
