@@ -7,7 +7,6 @@ public interface DAO<T extends Serializable> {
 	
 	List<T> findAll();
 	
-
 	boolean create(T entity);
 	
 	boolean remove(T entity);
