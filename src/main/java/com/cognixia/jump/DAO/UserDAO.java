@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import com.cognixia.jump.ConnectionManager.ConnectionManager;
+import com.cognixia.jump.Exceptions.RecordNotFoundException;
 import com.cognixia.jump.Exceptions.UnexpectedInputException;
 import com.cognixia.jump.model.User;
 
@@ -52,17 +53,19 @@ public class UserDAO implements DAO<User> {
 
 			rs = prep.executeQuery();
 
-			rs.next();
-
-			if (rs != null) {
+			if (rs.next()) {
 				return rs.getInt(1);
 			}
-				
+
+			else {
+				throw new RecordNotFoundException("User not found");
+			}
 
 		} catch (SQLException e) {
-			throw new UnexpectedInputException();
-		}
-		catch(Exception e) {
+			e.printStackTrace();
+		} catch (RecordNotFoundException e) {
+			System.out.println(e);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
