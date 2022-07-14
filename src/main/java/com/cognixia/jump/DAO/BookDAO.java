@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.cognixia.jump.ConnectionManager.ConnectionManager;
 import com.cognixia.jump.model.Book;
+import com.cognixia.jump.model.Tracker;
 
 
 
@@ -90,6 +91,49 @@ public class BookDAO implements DAO<Book>{
 		}
 
 		return book;
+	}
+	
+	public List<Book> findByName(List<Tracker> trackerList) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
+		List<Book> bookList = new ArrayList<>();
+
+		Book book = null;
+		int bookID;
+
+		try {
+
+			query = "SELECT * FROM book WHERE bookID = ?";
+
+			pstmt = conn.prepareStatement(query);
+
+			for (Tracker tracker : trackerList) {
+				bookID = tracker.getBookID();
+				pstmt.setInt(1, bookID);
+
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+
+					book = new Book();
+					book.setBookID(rs.getInt(1));
+					book.setName(rs.getString(2));
+					book.setAuthor(rs.getString(3));
+					book.setPages(rs.getInt(4));
+
+					bookList.add(book);
+
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return bookList;
 	}
 
 	@Override
