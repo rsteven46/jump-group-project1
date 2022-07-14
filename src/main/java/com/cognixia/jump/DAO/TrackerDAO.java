@@ -131,6 +131,30 @@ public class TrackerDAO implements DAO<Tracker> {
 		return true;
 
 	}
+	
+	public boolean remove(int userID,int bookID) {
+
+		PreparedStatement pstmt = null;
+		String query = "";
+
+		// Will insert new tracker when a user adds a new book to its list.
+		try {
+			query = "DELETE FROM tracker WHERE userID = ? AND bookID = ?";
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setInt(1, userID);
+			pstmt.setInt(2, bookID);
+
+			pstmt.execute();
+
+			System.out.println("Tracker removed.");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+
+	}
 
 	@Override
 	public boolean update(Tracker entity) {
