@@ -51,34 +51,42 @@ public class ConsoleUserInterface {
 
 	public static void mainMenu(Scanner scan) {
 		int userInput = 0;
+		boolean exitStatus = false;
 
-		System.out.println("\nPlease choose your menu:");
+		while (exitStatus == false) {
+			System.out.println("\nPlease choose your menu:");
 
-		System.out.println("\n1. View book list\n" 
-							+ "2. Update process\n" 
-							+ "3. Add a book\n" 
-							+ "4. Remove a book\n" + "5. Exit");
+			System.out.println("\n1. View book list\n" + "2. Update process\n" + "3. Add a book\n"
+					+ "4. Remove a book\n" + "5. Exit");
 
-		userInput = InputValidation.mainMenuValidation(scan, "^[1234]{1}$");
+			userInput = InputValidation.mainMenuValidation(scan, "^[1234]{1}$");
 
-		switch (userInput) {
-		case 1:
-			// List all view
-			listView(scan);
-			mainMenu(scan);
-			break;
-		case 2:
-			// Update process view
-			updateProgressView(scan);
-			break;
-		case 3:
-			// Add a book view
-			break;
-		case 4:
-			// Remove a book view
-			break;
-		case 5:
-			return;
+			switch (userInput) {
+			case 1:
+				// List all view
+				listView(scan);
+				mainMenu(scan);
+				break;
+			case 2:
+				// Update process view
+				updateProgressView(scan);
+				break;
+			case 3:
+				// Add a book view
+				addBookView(scan);
+				break;
+			case 4:
+				// Remove a book view
+				break;
+			case 5:
+				String response = null;
+				System.out.println("\nDo you want to log out? [Y/N]");
+				response = scan.next();
+				if (response == "y" || response == "Y") {
+					id = 0;
+					userPrompt(scan);
+				}
+			}
 		}
 	}
 
@@ -123,45 +131,68 @@ public class ConsoleUserInterface {
 
 	private static void searchBookPrompt(Scanner scan) {
 		BookDAO bDao = new BookDAO();
-		
+
 		System.out.println("\nPlease enter Book name to update:");
 		scan.nextLine();
 		String bookName = scan.nextLine();
-		
+
 		Book book = bDao.findByName(bookName);
-		
 		updateStatusView(book, scan);
 	}
 
 	private static void updateStatusView(Book book, Scanner scan) {
 		int userInput = 0;
+		Tracker track = new Tracker();
 		TrackerDAO tDao = new TrackerDAO();
-
-		System.out.println("Please choose your status:"
-							+ "1. Not started\n"
-							+ "2. Started\n"
-							+ "3. Complete\n" 
-							+ "4. Go Back");
 		
+		System.out.println(
+				"\nPlease choose your status:" + "\n1. Not started\n" + "2. Started\n" + "3. Complete\n" + "4. Go Back");
+
 		userInput = InputValidation.mainMenuValidation(scan, "^[1234]$");
 
 		switch (userInput) {
 		case 1:
+			//update status to not started
+			track =tDao.findByCompositeId(id, book.getBookID());
+			track.setProgressStatus("Not Started");
+			
+			if(tDao.update(track)) {
+				System.out.println("\n\t *** Record updated ***");
+			}
+			System.out.println(track.getProgressStatus());
+			
 			break;
 		case 2:
-			// Update process view
+			// Update status to started
+			track =tDao.findByCompositeId(id, book.getBookID());
+			track.setProgressStatus("Started");
+			
+			if(tDao.update(track)) {
+				System.out.println("\n\t *** Record updated ***");
+			}
+			System.out.println(track.getProgressStatus());
+			
 			break;
 		case 3:
-			// Add a book view
+			// update status to completed
+			track =tDao.findByCompositeId(id, book.getBookID());
+			track.setProgressStatus("Completed");
+			
+			if(tDao.update(track)) {
+				System.out.println("\n\t *** Record updated ***");
+			}
+			System.out.println(track.getProgressStatus());
+			
 			break;
 		case 4:
 			// Remove a book view
+			
 			break;
 		}
 	}
 
 	public static void addBookView(Scanner scan) {
-
+		
 	}
 
 	public static void removeBookView(Scanner scan) {

@@ -26,7 +26,7 @@ public class TrackerDAO implements DAO<Tracker> {
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, userID);
-			pstmt.setInt(1, bookID);
+			pstmt.setInt(2, bookID);
 
 			rs = pstmt.executeQuery();
 
@@ -144,7 +144,7 @@ public class TrackerDAO implements DAO<Tracker> {
 
 			pstmt.setString(1, entity.getProgressStatus());
 			pstmt.setInt(2, entity.getUserID());
-			pstmt.setInt(2, entity.getBookID());
+			pstmt.setInt(3, entity.getBookID());
 
 			int numUpdates = pstmt.executeUpdate();
 
