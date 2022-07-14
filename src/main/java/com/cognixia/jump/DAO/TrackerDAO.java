@@ -3,7 +3,6 @@ package com.cognixia.jump.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +83,6 @@ public class TrackerDAO implements DAO<Tracker> {
 	@Override
 	public boolean create(Tracker entity) {
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "";
 
 		// Will insert new tracker when a user adds a new book to its list.
@@ -112,9 +110,7 @@ public class TrackerDAO implements DAO<Tracker> {
 	public boolean remove(Tracker entity) {
 
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "";
-		Tracker tracker = null;
 
 		// Will insert new tracker when a user adds a new book to its list.
 		try {
@@ -139,7 +135,6 @@ public class TrackerDAO implements DAO<Tracker> {
 	public boolean update(Tracker entity) {
 
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "";
 
 		try {
