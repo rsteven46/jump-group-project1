@@ -19,20 +19,21 @@ public class ConsoleUserInterface {
 	private static int id = 0;
 
 	public static void userPrompt(Scanner scan) {
-		String username = null, password = null;
+		//String username = null, password = null;
 
 		System.out.println("\t\t*** Progress Tracker ***");
 
 		while (id == 0) {
+			String username = null, password = null;
 			try {
-				System.out.println("\t\nPlease enter username: ");
-				// username = scan.next();
+				System.out.print("\t\nPlease enter username: ");
+				 username = scan.next();
 
-				System.out.println("\t\nPlease enter password: ");
-				// password = scan.next();
+				System.out.print("\t\nPlease enter password: ");
+				 password = scan.next();
 
-				username = "Zainal";
-				password = "Password";
+				//username = "Zainal";
+				//password = "Password";
 
 				UserDAO dao = new UserDAO();
 				User user = new User();
@@ -59,7 +60,7 @@ public class ConsoleUserInterface {
 			System.out.println("\n1. View book list\n" + "2. Update process\n" + "3. Add a book\n"
 					+ "4. Remove a book\n" + "5. Exit");
 
-			userInput = InputValidation.mainMenuValidation(scan, "^[1234]{1}$");
+			userInput = InputValidation.mainMenuValidation(scan, "^[12345]{1}$");
 
 			switch (userInput) {
 			case 1:
@@ -76,16 +77,20 @@ public class ConsoleUserInterface {
 				addBookView(scan);
 				break;
 			case 4:
-				// Remove a book view
+				removeBookView(scan);
 				break;
 			case 5:
 				String response = null;
 				System.out.println("\nDo you want to log out? [Y/N]");
 				response = scan.next();
-				if (response == "y" || response == "Y") {
+				if (response.equalsIgnoreCase("y") ) {
 					id = 0;
+					exitStatus= true;
 					userPrompt(scan);
+					
 				}
+				break;
+				
 			}
 		}
 	}
@@ -268,11 +273,35 @@ public class ConsoleUserInterface {
 			bookList.add(bDAO.findById(bookIDList.get(i)));
 			
 		}
+
+		//print out  progress book list		
+		bookList.forEach(System.out::println);
 		
-		//print out book list
+		System.out.println("Please enter the name you want to remove from your progress list");
+		
 		// get user input to remove from their progress tracker list
+		scan.nextLine();
+		String userDelBook;
+		
+		userDelBook=scan.nextLine();
+		int DelBookID=-1;
+		System.out.println("This is the book name you want to remove " + userDelBook);
+
+		for(int i =0; i< bookList.size(); i++) {
+			if((bookList.get(i)).getName().equals(userDelBook)  ) {
+				DelBookID=bookList.get(i).getBookID();
+			}
+		}
+		System.out.println(DelBookID + "This is the book id you want to remove");
+		
 		// remove from progress tracker
+		
+		tDao.remove(id,DelBookID);
+		
 		//print progress tracker list
+		
+		tList=tDao.findByUserId(id);
+		tList.forEach(System.out::println);
 
 	}
 
