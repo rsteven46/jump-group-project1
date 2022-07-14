@@ -91,6 +91,44 @@ public class BookDAO implements DAO<Book> {
 		return bookList;
 	}
 
+	
+	//Find single book
+	public Book findByName(String name) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
+
+		
+		Book book = null;
+
+		try {
+
+			query = "SELECT * FROM book WHERE bookName = ?";
+
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, name);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				book = new Book();
+				book.setBookID(rs.getInt(1));
+				book.setName(rs.getString(2));
+				book.setAuthor(rs.getString(3));
+				book.setPages(rs.getInt(4));
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return book;
+	}
+
 	@Override
 	public boolean create(Book entity) {
 		// input a book into the database

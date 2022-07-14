@@ -3,19 +3,21 @@ package com.cognixia.jump.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
 import com.cognixia.jump.ConnectionManager.ConnectionManager;
+import com.cognixia.jump.Exceptions.UnexpectedInputException;
 import com.cognixia.jump.model.User;
 
-public class UserDAO implements DAO<User>{
+public class UserDAO implements DAO<User> {
 
 	Connection conn = ConnectionManager.getConnection();
-	
+
 	@Override
 	public List<User> findAll() {
-		
+
 		return null;
 	}
 
@@ -38,29 +40,32 @@ public class UserDAO implements DAO<User>{
 		return false;
 	}
 
-	
-	public int verifyUser(User entity) {
+	public int verifyUser(User entity) throws UnexpectedInputException {
 		ResultSet rs = null;
 		User user = null;
 		String SQL = "SELECT * from user where username=? and passwd=?";
-		
+
 		try {
 			PreparedStatement prep = conn.prepareStatement(SQL);
 			prep.setString(1, entity.getUsername());
 			prep.setString(2, entity.getPassword());
-			
+
 			rs = prep.executeQuery();
-			
+
 			rs.next();
-			
-			if(rs != null) {
+
+			if (rs != null) {
 				return rs.getInt(1);
 			}
-			
-		} catch (Exception e) {
+				
+
+		} catch (SQLException e) {
+			throw new UnexpectedInputException();
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return 0;
 	}
 
