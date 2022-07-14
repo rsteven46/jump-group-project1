@@ -192,6 +192,10 @@ public class ConsoleUserInterface {
 	}
 
 	public static void addBookView(Scanner scan) {
+		TrackerDAO track = new TrackerDAO();
+		List<Tracker> list = new ArrayList<>();
+		
+		list = track.findByUserId(id);
 		
 	}
 

@@ -67,7 +67,6 @@ public class TrackerDAO implements DAO<Tracker> {
 
 				Tracker tracker = new Tracker();
 				tracker.setUserID(rs.getInt(1));
-				tracker.setBookID(rs.getInt(2));
 
 				trackerList.add(tracker);
 
