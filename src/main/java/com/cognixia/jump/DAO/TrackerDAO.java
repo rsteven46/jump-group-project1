@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cognixia.jump.ConnectionManager.ConnectionManager;
+import com.cognixia.jump.Exceptions.RecordNotFoundException;
 import com.cognixia.jump.model.Tracker;
 
 public class TrackerDAO implements DAO<Tracker> {
@@ -38,8 +39,11 @@ public class TrackerDAO implements DAO<Tracker> {
 				tracker.setBookID(rs.getInt(2));
 				tracker.setProgressStatus(rs.getString(3));
 
-			}
+			} else
+				throw new RecordNotFoundException("No tracker found");
 
+		} catch (RecordNotFoundException e) {
+			System.out.println(e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,6 +69,9 @@ public class TrackerDAO implements DAO<Tracker> {
 
 			while (rs.next()) {
 
+				if (rs.getRow() == 0)
+					throw new RecordNotFoundException("No tracker found");
+
 				Tracker tracker = new Tracker();
 				tracker.setUserID(rs.getInt(1));
 				tracker.setBookID(rs.getInt(2));
@@ -74,6 +81,8 @@ public class TrackerDAO implements DAO<Tracker> {
 
 			}
 
+		} catch (RecordNotFoundException e) {
+			System.out.println(e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -131,8 +140,8 @@ public class TrackerDAO implements DAO<Tracker> {
 		return true;
 
 	}
-	
-	public boolean remove(int userID,int bookID) {
+
+	public boolean remove(int userID, int bookID) {
 
 		PreparedStatement pstmt = null;
 		String query = "";
@@ -201,6 +210,9 @@ public class TrackerDAO implements DAO<Tracker> {
 
 			while (rs.next()) {
 
+				if (rs.getRow() == 0)
+					throw new RecordNotFoundException("No tracker found");
+
 				Tracker tracker = new Tracker();
 				tracker.setUserID(rs.getInt(1));
 				tracker.setBookID(rs.getInt(2));
@@ -209,6 +221,8 @@ public class TrackerDAO implements DAO<Tracker> {
 
 			}
 
+		} catch (RecordNotFoundException e) {
+			System.out.println(e);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
