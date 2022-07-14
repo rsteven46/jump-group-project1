@@ -1,6 +1,7 @@
 package com.cognixia.jump.menu;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import java.util.Scanner;
 import com.cognixia.jump.DAO.BookDAO;
 import com.cognixia.jump.DAO.TrackerDAO;
 import com.cognixia.jump.DAO.UserDAO;
+import com.cognixia.jump.InputValidation.InputValidation;
 import com.cognixia.jump.model.Book;
 import com.cognixia.jump.model.Tracker;
 import com.cognixia.jump.model.User;
@@ -19,15 +21,18 @@ public class ConsoleUserInterface {
 	public static void userPrompt(Scanner scan) {
 		String username = null, password = null;
 
-		System.out.println(" Progress Tracker ");
+		System.out.println("\t\t*** Progress Tracker ***");
 
 		while (id == 0) {
 			try {
-				System.out.println("\t\n Please enter username: ");
-				username = scan.next();
+				System.out.println("\t\nPlease enter username: ");
+				// username = scan.next();
 
-				System.out.println("\t\n Please enter password: ");
-				password = scan.next();
+				System.out.println("\t\nPlease enter password: ");
+				// password = scan.next();
+
+				username = "Zainal";
+				password = "Password";
 
 				UserDAO dao = new UserDAO();
 				User user = new User();
@@ -45,18 +50,22 @@ public class ConsoleUserInterface {
 	}
 
 	public static void mainMenu(Scanner scan) {
+		int userInput = 0;
 
-		System.out.println("Please choose your menu:");
+		System.out.println("\nPlease choose your menu:");
 
-		System.out.println("1. View book list\n" + "2. Update process\n" + "3. Add a book\n" + "4. Remove a book");
+		System.out.println("\n1. View book list\n" 
+							+ "2. Update process\n" 
+							+ "3. Add a book\n" 
+							+ "4. Remove a book\n" + "5. Exit");
 
-		int userInput = scan.nextInt();
+		userInput = InputValidation.mainMenuValidation(scan, "^[1234]{1}$");
 
 		switch (userInput) {
-
 		case 1:
 			// List all view
 			listView(scan);
+			mainMenu(scan);
 			break;
 		case 2:
 			// Update process view
@@ -68,15 +77,18 @@ public class ConsoleUserInterface {
 		case 4:
 			// Remove a book view
 			break;
+		case 5:
+			return;
 		}
 	}
 
 	public static void listView(Scanner scan) {
+		// variables
+		int bookID;
 
+		// created objects
 		TrackerDAO tDao = new TrackerDAO();
 		BookDAO bDao = new BookDAO();
-
-		int bookID;
 
 		List<Tracker> trackers = new ArrayList<Tracker>();
 
@@ -93,45 +105,48 @@ public class ConsoleUserInterface {
 	}
 
 	public static void updateProgressView(Scanner scan) {
-
-		BookDAO bDao = new BookDAO();
-
-		System.out.println("Please choose your menu:");
-
-		System.out.println("1. Enter Book Name: " + "2. Go Back\n");
-
-		int userInput = scan.nextInt();
+		int userInput = 0;
+		System.out.println("\nPlease choose your menu:");
+		System.out.println("\n1. Enter Book Name " + "\n2. Go Back to previous menu\n");
+		userInput = InputValidation.mainMenuValidation(scan, "^[12]{1}$");
 
 		switch (userInput) {
-
 		case 1:
-			System.out.println();
-			String bookName = scan.nextLine();
-			Book book = bDao.findByName(bookName);
-			updateStatusView(book, scan);
+			searchBookPrompt(scan);
 			break;
 		case 2:
-			// Update process view
+			mainMenu(scan);
 			break;
-
 		}
 
 	}
-	
+
+	private static void searchBookPrompt(Scanner scan) {
+		BookDAO bDao = new BookDAO();
+		
+		System.out.println("\nPlease enter Book name to update:");
+		scan.nextLine();
+		String bookName = scan.nextLine();
+		
+		Book book = bDao.findByName(bookName);
+		
+		updateStatusView(book, scan);
+	}
+
 	private static void updateStatusView(Book book, Scanner scan) {
-		
+		int userInput = 0;
 		TrackerDAO tDao = new TrackerDAO();
+
+		System.out.println("Please choose your status:"
+							+ "1. Not started\n"
+							+ "2. Started\n"
+							+ "3. Complete\n" 
+							+ "4. Go Back");
 		
-		System.out.println("Please choose your status:");
-
-		System.out.println("1. Not started\n" + "2. Started\n" + "3. Complete\n" + "4. Go Back");
-
-		int userInput = scan.nextInt();
+		userInput = InputValidation.mainMenuValidation(scan, "^[1234]$");
 
 		switch (userInput) {
-
 		case 1:
-			System.out.println(id);
 			break;
 		case 2:
 			// Update process view
