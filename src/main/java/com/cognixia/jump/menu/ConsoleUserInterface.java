@@ -192,10 +192,55 @@ public class ConsoleUserInterface {
 	}
 
 	public static void addBookView(Scanner scan) {
-		TrackerDAO track = new TrackerDAO();
-		List<Tracker> list = new ArrayList<>();
+		TrackerDAO tDao = new TrackerDAO();
+
+		List<Tracker> tList = tDao.findByUserId(id);
+
+		List<Integer> bookIDList = new ArrayList<>();
+		Integer bookID = 0;
+
+		for (Tracker tracker : tList) {
+			System.out.println(tracker.getBookID());
+			bookID = tracker.getBookID();
+			bookIDList.add(bookID);
+		}
+
+		BookDAO bDao = new BookDAO();
+		List<Book> blist = bDao.findAll();
 		
-		list = track.findByUserId(id);
+		for (int i = 0; i < blist.size(); i++) {
+			
+			int bID = blist.get(i).getBookID();
+			
+			
+			for (int j = 0; j < bookIDList.size(); j++) {
+			
+				if(bookIDList.get(j) == bID) {
+
+					blist.remove(i);
+					continue;
+				}
+			}
+
+		}
+		blist.forEach(System.out::println);
+		
+	System.out.println("Please enter a book name from the list above to add to your progress tracker");
+	scan.nextLine();
+	String userAddedBook;
+	
+	userAddedBook=scan.nextLine();
+	int newbid;
+		for(int i = 0; i < blist.size(); i++) {
+				
+			if(userAddedBook.equals(blist.get(i).getName())  ) {
+					newbid=blist.get(i).getBookID();
+					Tracker newTracker= new Tracker(id,newbid,"Not Started");		
+					tDao.create(newTracker);
+					System.out.println("Added to your list you nerd");
+					
+				}
+		}
 		
 	}
 

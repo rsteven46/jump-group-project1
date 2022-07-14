@@ -13,6 +13,8 @@ public class ProgressDriver {
 		Scanner scan = new Scanner(System.in);
 		
 		ConsoleUserInterface.userPrompt(scan);
+		
+		scan.close();
 	}
 
 }
