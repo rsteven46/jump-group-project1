@@ -180,5 +180,40 @@ public class BookDAO implements DAO<Book>{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public Book findById(int id) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
 
+		
+		Book book = null;
+
+		try {
+
+			query = "SELECT * FROM book WHERE bookID = ?";
+
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setInt(1,id);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				book = new Book();
+				book.setBookID(rs.getInt(1));
+				book.setName(rs.getString(2));
+				book.setAuthor(rs.getString(3));
+				book.setPages(rs.getInt(4));
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return book;
+	}
 }

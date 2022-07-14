@@ -245,6 +245,34 @@ public class ConsoleUserInterface {
 	}
 
 	public static void removeBookView(Scanner scan) {
+		TrackerDAO tDao = new TrackerDAO();
+		BookDAO bDAO = new BookDAO();
+		
+		List<Tracker> tList = tDao.findByUserId(id);
+		
+		System.out.println("Please select a book you want to remove from your list");
+		
+		List<Integer> bookIDList = new ArrayList<>();
+		Integer bookID = 0;
+
+		for (Tracker tracker : tList) {
+			System.out.println(tracker.getBookID());
+			bookID = tracker.getBookID();
+			bookIDList.add(bookID);
+		}
+		
+		List<Book> bookList = new ArrayList<Book>();
+		
+		for(int i =0; i < bookIDList.size() ; i++) {
+			
+			bookList.add(bDAO.findById(bookIDList.get(i)));
+			
+		}
+		
+		//print out book list
+		// get user input to remove from their progress tracker list
+		// remove from progress tracker
+		//print progress tracker list
 
 	}
 
