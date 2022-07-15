@@ -54,7 +54,6 @@ public class BookDAO implements DAO<Book> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -99,7 +98,6 @@ public class BookDAO implements DAO<Book> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
@@ -150,7 +148,6 @@ public class BookDAO implements DAO<Book> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -187,7 +184,6 @@ public class BookDAO implements DAO<Book> {
 
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -243,7 +239,6 @@ public class BookDAO implements DAO<Book> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -46,7 +46,8 @@ public class Tracker implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Tracker [userID=" + userID + ", bookID=" + bookID + ", progressStatus=" + progressStatus + "]";
+		return String.format("[Book ID: %6d | User ID : %6d | Status: %15s]", userID, bookID, progressStatus);
+		//return "Tracker [userID=" + userID + ", bookID=" + bookID + ", progressStatus=" + progressStatus + "]";
 	}
 
 }

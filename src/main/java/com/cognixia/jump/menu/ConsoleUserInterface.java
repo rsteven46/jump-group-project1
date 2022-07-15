@@ -57,16 +57,16 @@ public class ConsoleUserInterface {
 		boolean exitStatus = false;
 
 		while (exitStatus == false) {
-			System.out.println("\nPlease choose your menu:");
+			System.out.println("\nPlease choose a menu option:");
 
 			System.out.println("\n1. View book list\n" 
 					+ "2. Update process\n" 
 					+ "3. Add a book\n"
 					+ "4. Remove a book\n" 
-					+ "5. Exit");
-
+					+ "5. Logout");
+			
 			userInput = InputValidation.mainMenuValidation(scan, "^[12345]{1}$");
-
+			System.out.println();
 			switch (userInput) {
 			case 1:
 				// List all view
@@ -108,15 +108,18 @@ public class ConsoleUserInterface {
 		// created objects
 		TrackerDAO tDao = new TrackerDAO();
 		BookDAO bDao = new BookDAO();
+		String bkID = "BookID", name = "Name", page = "Pages", author = "Author";
 
 		List<Tracker> trackers = new ArrayList<Tracker>();
 		trackers = tDao.findByUserId(id);
 		List<Book> books = new ArrayList<Book>();
 		books = bDao.findByName(trackers);
-
-		for (Book book : books) {
-			System.out.println(book);
-		}
+		
+		System.out.println("\nThese are the books currently being tracked: \n");
+		
+		String str = String.format("[%3s | %60s | %6s | %30s]", bkID, name, page, author);
+		System.out.println(str);
+		books.forEach(System.out::println);
 
 	}
 
@@ -146,7 +149,36 @@ public class ConsoleUserInterface {
 		String bookName = null;
 		Book book = null;
 		
-		System.out.println("\nPlease enter Book name to update:");
+		/******************************/
+		
+		TrackerDAO tDao = new TrackerDAO();
+		BookDAO bDAO = new BookDAO();
+		Integer bookID = 0;
+		List<Integer> bookIDList = new ArrayList<>();
+		List<Book> bookList = new ArrayList<Book>();
+		String bkID = "BookID", name = "Name", page = "Pages", author = "Author";
+		
+		List<Tracker> tList = tDao.findByUserId(id);
+
+		System.out.println("You are currently tracking: \n");
+		
+		for (Tracker tracker : tList) {
+			bookID = tracker.getBookID();
+			bookIDList.add(bookID);
+		}
+
+		for (int i = 0; i < bookIDList.size(); i++) {
+			bookList.add(bDAO.findById(bookIDList.get(i)));
+		}
+
+		// print out progress book list
+		String str = String.format("[%3s | %60s | %6s | %30s]", bkID, name, page, author);
+		System.out.println(str);
+		bookList.forEach(System.out::println);
+		
+		/*******************************/
+		
+		System.out.print("\nPlease enter Book name to update: ");
 		scan.nextLine();
 		bookName = scan.nextLine();
 
@@ -163,7 +195,7 @@ public class ConsoleUserInterface {
 				+ "\n1. Not started\n" 
 				+ "2. Started\n" 
 				+ "3. Complete\n"
-				+ "4. Go Back");
+				+ "4. Restart from main menu");
 
 		userInput = InputValidation.mainMenuValidation(scan, "^[1234]$");
 
@@ -177,7 +209,7 @@ public class ConsoleUserInterface {
 				System.out.println("\n\t *** Record updated ***");
 			}
 		
-			System.out.println(track.getProgressStatus());
+			System.out.println(track);
 			break;
 		
 		case 2:
@@ -189,7 +221,7 @@ public class ConsoleUserInterface {
 				System.out.println("\n\t *** Record updated ***");
 			}
 			
-			System.out.println(track.getProgressStatus());
+			System.out.println(track);
 			break;
 			
 		case 3:
@@ -198,9 +230,9 @@ public class ConsoleUserInterface {
 			track.setProgressStatus("Completed");
 
 			if (tDao.update(track)) {
-				System.out.println("\n\t *** Record updated ***");
+				System.out.println("\n\t\t\t *** Record updated ***");
 			}
-			System.out.println(track.getProgressStatus());
+			System.out.println(track);
 			break;
 			
 		case 4:
@@ -217,11 +249,11 @@ public class ConsoleUserInterface {
 		List<Integer> bookIDList = new ArrayList<>();
 		String userAddedBook = null;
 		int newbid = 0;
+		String bkID = "BookID", name = "Name", page = "Pages", author = "Author";
 
 		List<Tracker> tList = tDao.findByUserId(id);
 		
 		for (Tracker tracker : tList) {
-			System.out.println(tracker.getBookID());
 			bookID = tracker.getBookID();
 			bookIDList.add(bookID);
 		}
@@ -238,10 +270,12 @@ public class ConsoleUserInterface {
 				}
 			}
 		}
-
+		
+		String str = String.format("[%3s | %60s | %6s | %30s]", bkID, name, page, author);
+		System.out.println(str);
 		blist.forEach(System.out::println);
 
-		System.out.println("Please enter a book name from the list above to add to your progress tracker");
+		System.out.print("\nPlease enter a book name from the list above to add to your progress tracker: ");
 		scan.nextLine();
 		userAddedBook = scan.nextLine();
 		
@@ -250,7 +284,7 @@ public class ConsoleUserInterface {
 				newbid = blist.get(i).getBookID();
 				Tracker newTracker = new Tracker(id, newbid, "Not Started");
 				tDao.create(newTracker);
-				System.out.println("Added to your list you nerd");
+				System.out.println("Added to your list!");
 			}
 		}
 	}
@@ -263,13 +297,13 @@ public class ConsoleUserInterface {
 		List<Book> bookList = new ArrayList<Book>();
 		String userDelBook = null;
 		int DelBookID = -1;
+		String bkID = "BookID", name = "Name", page = "Pages", author = "Author";
 		
 		List<Tracker> tList = tDao.findByUserId(id);
 
-		System.out.println("Please select a book from the list below that you would like to remove from your list");
+		System.out.println("You are currently tracking: \n");
 		
 		for (Tracker tracker : tList) {
-			System.out.println(tracker.getBookID());
 			bookID = tracker.getBookID();
 			bookIDList.add(bookID);
 		}
@@ -279,28 +313,27 @@ public class ConsoleUserInterface {
 		}
 
 		// print out progress book list
+		String str = String.format("[%3s | %60s | %6s | %30s]", bkID, name, page, author);
+		System.out.println(str);
 		bookList.forEach(System.out::println);
 
 		// get user input to remove from their progress tracker list
-		System.out.println("Please enter the name you want to remove from your progress list");
+		System.out.print("\nPlease enter the book name you would like to remove from your progress list: ");
 		scan.nextLine();
 		userDelBook = scan.nextLine();
 		
-		System.out.println("This is the book name you want to remove " + userDelBook);
-
 		for (int i = 0; i < bookList.size(); i++) {
 			if ((bookList.get(i)).getName().equals(userDelBook)) {
 				DelBookID = bookList.get(i).getBookID();
 			}
 		}
 
-		System.out.println(DelBookID + "This is the book id you want to remove");
-
 		// remove from progress tracker
 		tDao.remove(id, DelBookID);
 
 		// print progress tracker list
 		tList = tDao.findByUserId(id);
+		System.out.println();
 		tList.forEach(System.out::println);
 	}
 

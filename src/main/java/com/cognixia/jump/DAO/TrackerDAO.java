@@ -52,7 +52,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -99,7 +98,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +121,8 @@ public class TrackerDAO implements DAO<Tracker> {
 			numInserts = pstmt.executeUpdate();
 
 			if (numInserts > 0) {
-				System.out.println("Tracker " + entity + " added to db.");
+				System.out.println("\nTracker added to db.\n");
+				System.out.println(entity);
 				return true;
 			}
 
@@ -133,7 +132,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -164,7 +162,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -195,7 +192,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -233,7 +229,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -277,7 +272,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
