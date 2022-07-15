@@ -64,9 +64,9 @@ public class ConsoleUserInterface {
 					+ "3. Add a book\n"
 					+ "4. Remove a book\n" 
 					+ "5. Exit");
-
+			
 			userInput = InputValidation.mainMenuValidation(scan, "^[12345]{1}$");
-
+			System.out.println();
 			switch (userInput) {
 			case 1:
 				// List all view
@@ -217,11 +217,11 @@ public class ConsoleUserInterface {
 		List<Integer> bookIDList = new ArrayList<>();
 		String userAddedBook = null;
 		int newbid = 0;
+		String bkID = "BookID", name = "Name", page = "Page", author = "Author";
 
 		List<Tracker> tList = tDao.findByUserId(id);
 		
 		for (Tracker tracker : tList) {
-			System.out.println(tracker.getBookID());
 			bookID = tracker.getBookID();
 			bookIDList.add(bookID);
 		}
@@ -238,10 +238,12 @@ public class ConsoleUserInterface {
 				}
 			}
 		}
-
+		
+		String str = String.format("[%1s | %60s | %6s | %30s]", bkID, name, page, author);
+		System.out.println(str);
 		blist.forEach(System.out::println);
 
-		System.out.println("Please enter a book name from the list above to add to your progress tracker");
+		System.out.println("\nPlease enter a book name from the list above to add to your progress tracker");
 		scan.nextLine();
 		userAddedBook = scan.nextLine();
 		
@@ -250,7 +252,7 @@ public class ConsoleUserInterface {
 				newbid = blist.get(i).getBookID();
 				Tracker newTracker = new Tracker(id, newbid, "Not Started");
 				tDao.create(newTracker);
-				System.out.println("Added to your list you nerd");
+				System.out.println("Added to your list!");
 			}
 		}
 	}

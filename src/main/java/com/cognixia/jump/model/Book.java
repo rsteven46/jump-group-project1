@@ -56,6 +56,7 @@ public class Book implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Book [bookID=" + bookID + ", name=" + name + ", pages=" + pages + ", author=" + author + "]\n";
+		return String.format("[BookID: %3d | Name: %60s | Pages: %6d | Author: \t%30s]", bookID, name, pages, author);
+//		return "[bookID=" + bookID + ",\t\t name=" + name + ",\t\t pages=" + pages + ",\t\t author=" + author + "]";
 	}
 }

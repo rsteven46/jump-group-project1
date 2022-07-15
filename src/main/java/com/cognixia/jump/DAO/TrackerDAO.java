@@ -52,7 +52,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -99,7 +98,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -133,7 +131,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -164,7 +161,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -195,7 +191,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -233,7 +228,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		
 		try {
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -277,7 +271,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		try {
 			rs.close();
 			pstmt.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

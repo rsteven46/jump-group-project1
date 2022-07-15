@@ -65,7 +65,6 @@ public class UserDAO implements DAO<User> {
 		try {
 			rs.close();
 			prep.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
