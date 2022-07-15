@@ -27,12 +27,20 @@ public class ConsoleUserInterface {
 			User user = new User();
 			
 			try {
-				System.out.print("\t\nPlease enter username: ");
+				System.out.print("\t\nPlease enter username or enter EXIT to exit: ");
 				username = scan.next();
 
-				System.out.print("\t\nPlease enter password: ");
-				password = scan.next();
+				if((username.equals("EXIT"))){
+					return;
+				}
 
+				System.out.print("\t\nPlease enter password or enter EXIT to exit: ");
+				password = scan.next();
+				
+				if((username.equals("EXIT"))){
+					return;
+				}
+				
 				user.setUsername(username);
 				user.setPassword(password);
 
@@ -343,5 +351,4 @@ public class ConsoleUserInterface {
 		tList = tDao.findByUserId(id);
 		System.out.println();
 	}
-
 }
