@@ -37,7 +37,7 @@ public class ConsoleUserInterface {
 				user.setPassword(password);
 
 				id = dao.verifyUser(user);
-				
+				user = new User();
 				if (id == 0) {
 					throw new LoginInputException(id);
 				}
@@ -279,7 +279,7 @@ public class ConsoleUserInterface {
 			}
 		}
 		
-		String str = String.format("[%3s | %60s | %6s | %30s]", bkID, name, page, author);
+		String str = String.format("%3s | %60s | %6s | %30s", bkID, name, page, author);
 		System.out.println(str);
 		blist.forEach(System.out::println);
 
@@ -321,7 +321,7 @@ public class ConsoleUserInterface {
 		}
 
 		// print out progress book list
-		String str = String.format("[%3s | %60s | %6s | %30s]", bkID, name, page, author);
+		String str = String.format("%3s | %60s | %6s | %30s", bkID, name, page, author);
 		System.out.println(str);
 		bookList.forEach(System.out::println);
 
@@ -342,7 +342,6 @@ public class ConsoleUserInterface {
 		// print progress tracker list
 		tList = tDao.findByUserId(id);
 		System.out.println();
-		tList.forEach(System.out::println);
 	}
 
 }
