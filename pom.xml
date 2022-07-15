@@ -22,7 +22,9 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.28</version>
+			<version>8.0.29</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -47,22 +49,52 @@
 							<mainClass>com.cognixia.jump.ProgressDriver</mainClass>
 						</manifest>
 					</archive>
+					<resources>
+						<resource>
+							<directory>src/main/java</directory>
+							<includes>
+								<include>src/main/resources/config.properties</include>
+							</includes>
+						</resource>
+					</resources>
 				</configuration>
 			</plugin>
 
 			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>com.cognixia.jump.ProgressDriver</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!--			<plugin>
+				<artifactId>maven-jar-plugin2</artifactId>
 				<configuration>
 					<resources>
 						<resource>
 							<directory>src/main/java</directory>
 							<includes>
-								<include>**/config.properties</include>
+								<include>src/main/resources/config.properties</include>
 							</includes>
 						</resource>
 					</resources>
 				</configuration>
-				</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 
