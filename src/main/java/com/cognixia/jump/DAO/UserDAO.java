@@ -4,12 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import com.cognixia.jump.ConnectionManager.ConnectionManager;
 import com.cognixia.jump.Exceptions.RecordNotFoundException;
-import com.cognixia.jump.Exceptions.UnexpectedInputException;
 import com.cognixia.jump.model.User;
 
 public class UserDAO implements DAO<User> {
@@ -41,7 +39,7 @@ public class UserDAO implements DAO<User> {
 		return false;
 	}
 
-	public int verifyUser(User entity) throws UnexpectedInputException {
+	public int verifyUser(User entity) throws RecordNotFoundException {
 		ResultSet rs = null;
 		User user = null;
 		String SQL = "SELECT * from user where username=? and passwd=?";
@@ -57,15 +55,10 @@ public class UserDAO implements DAO<User> {
 				return rs.getInt(1);
 			}
 
-			else {
-				throw new RecordNotFoundException("User not found");
-			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (RecordNotFoundException e) {
-			System.out.println(e);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
