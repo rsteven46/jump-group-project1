@@ -12,17 +12,17 @@ public class User implements Serializable {
 	private String username;
 	private String password;
 
+	public User() {
+		this.userID = 0;
+		this.username = "";
+		this.password = "";
+	}
+
 	public User(int userID, String username, String password) {
 		super();
 		this.userID = userID;
 		this.username = username;
 		this.password = password;
-	}
-
-	public User() {
-		this.userID = 0;
-		this.username = "";
-		this.password = "";
 	}
 
 	public int getUserID() {
@@ -54,5 +54,4 @@ public class User implements Serializable {
 		return "User [userID=" + userID + ", username=" + username + ", password=" + password + "]\n";
 	}
 
-	
 }

@@ -12,7 +12,7 @@ public class Book implements Serializable {
 	private String author;
 
 	public Book() {
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	public Book(int bookID, String name, int pages) {

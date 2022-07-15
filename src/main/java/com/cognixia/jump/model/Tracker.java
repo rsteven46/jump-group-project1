@@ -11,17 +11,13 @@ public class Tracker implements Serializable {
 	private String progressStatus;
 
 	public Tracker() {
-
 		this(0, 0, "Not Started");
-
 	}
 
 	public Tracker(int userID, int bookID, String progressStatus) {
-
 		this.userID = userID;
 		this.bookID = bookID;
 		this.progressStatus = progressStatus;
-
 	}
 
 	public int getUserID() {
