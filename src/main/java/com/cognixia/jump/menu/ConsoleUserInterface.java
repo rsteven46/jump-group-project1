@@ -108,7 +108,7 @@ public class ConsoleUserInterface {
 		// created objects
 		TrackerDAO tDao = new TrackerDAO();
 		BookDAO bDao = new BookDAO();
-		String bkID = "BookID", name = "Name", page = "Pages", author = "Author";
+		String bkID = "BookID", name = "Name", page = "Pages", author = "Author", status = "Status";
 
 		List<Tracker> trackers = new ArrayList<Tracker>();
 		trackers = tDao.findByUserId(id);
@@ -117,9 +117,13 @@ public class ConsoleUserInterface {
 		
 		System.out.println("\nThese are the books currently being tracked: \n");
 		
-		String str = String.format("[%3s | %60s | %6s | %30s]", bkID, name, page, author);
+		String str = String.format("%3s | %60s | %6s | %30s", bkID, name, page, author, status);
 		System.out.println(str);
-		books.forEach(System.out::println);
+		
+		for (int i = 0; i < books.size(); i++) {
+			System.out.println(books.get(i) + trackers.get(i).getProgressStatus());
+			
+		}
 
 	}
 
@@ -156,7 +160,7 @@ public class ConsoleUserInterface {
 		Integer bookID = 0;
 		List<Integer> bookIDList = new ArrayList<>();
 		List<Book> bookList = new ArrayList<Book>();
-		String bkID = "BookID", name = "Name", page = "Pages", author = "Author";
+		String bkID = "BookID", name = "Name", page = "Pages", author = "Author", status = "Status";
 		
 		List<Tracker> tList = tDao.findByUserId(id);
 
@@ -172,9 +176,13 @@ public class ConsoleUserInterface {
 		}
 
 		// print out progress book list
-		String str = String.format("[%3s | %60s | %6s | %30s]", bkID, name, page, author);
-		System.out.println(str);
-		bookList.forEach(System.out::println);
+		String str = String.format("%3s | %60s | %6s | %30s | %11s", bkID, name, page, author, status);
+		System.out.println(str);		
+		
+		for (int i = 0; i < bookList.size(); i++) {
+			System.out.println(bookList.get(i) + tList.get(i).getProgressStatus());
+			
+		}
 		
 		/*******************************/
 		
