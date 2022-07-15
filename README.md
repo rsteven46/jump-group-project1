@@ -1,4 +1,4 @@
 # jump-group-project1
-# Steven Zanial Nicholas
+# Steven Zainal Nicholas
 
 First group project Progress Tracker
