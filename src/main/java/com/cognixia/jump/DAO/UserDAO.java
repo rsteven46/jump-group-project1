@@ -40,12 +40,12 @@ public class UserDAO implements DAO<User> {
 	}
 
 	public int verifyUser(User entity) throws RecordNotFoundException {
+		PreparedStatement prep = null;
 		ResultSet rs = null;
-		User user = null;
 		String SQL = "SELECT * from user where username=? and passwd=?";
 
 		try {
-			PreparedStatement prep = conn.prepareStatement(SQL);
+			prep = conn.prepareStatement(SQL);
 			prep.setString(1, entity.getUsername());
 			prep.setString(2, entity.getPassword());
 
@@ -59,6 +59,14 @@ public class UserDAO implements DAO<User> {
 			e.printStackTrace();
 		}
 		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			rs.close();
+			prep.close();
+			conn.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 

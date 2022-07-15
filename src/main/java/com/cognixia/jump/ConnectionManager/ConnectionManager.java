@@ -9,6 +9,7 @@ public class ConnectionManager {
 	private static Connection connection = null;
 
 	private ConnectionManager() {
+
 	};
 
 	private static void makeConnection() {
@@ -20,7 +21,6 @@ public class ConnectionManager {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
 
 		String url = props.getProperty("url");

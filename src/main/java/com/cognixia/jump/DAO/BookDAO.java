@@ -3,6 +3,7 @@ package com.cognixia.jump.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,8 @@ public class BookDAO implements DAO<Book> {
 	// List all books
 	@Override
 	public List<Book> findAll() {
-		List<Book> books = new ArrayList<>();
 
+		List<Book> books = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "";
@@ -31,9 +32,9 @@ public class BookDAO implements DAO<Book> {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-
-				if (rs.getRow() == 0)
+				if (rs.getRow() == 0) {
 					throw new RecordNotFoundException("No books found");
+				}
 
 				Book b = new Book();
 				b.setBookID(rs.getInt(1));
@@ -42,7 +43,6 @@ public class BookDAO implements DAO<Book> {
 				b.setPages(rs.getInt(4));
 
 				books.add(b);
-
 			}
 
 		} catch (RecordNotFoundException e) {
@@ -51,6 +51,14 @@ public class BookDAO implements DAO<Book> {
 			e.printStackTrace();
 		}
 
+		try {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return books;
 	}
 
@@ -60,39 +68,42 @@ public class BookDAO implements DAO<Book> {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "";
-
 		Book book = null;
 
 		try {
 
 			query = "SELECT * FROM book WHERE bookName = ?";
-
 			pstmt = conn.prepareStatement(query);
-
 			pstmt.setString(1, name);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				if (rs.getRow() == 0)
+				if (rs.getRow() == 0) {
 					throw new RecordNotFoundException("No books found");
+				}
 
 				book = new Book();
 				book.setBookID(rs.getInt(1));
 				book.setName(rs.getString(2));
 				book.setAuthor(rs.getString(3));
 				book.setPages(rs.getInt(4));
-
 			}
 
 		} catch (RecordNotFoundException e) {
 			System.out.println(e);
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		try {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
 		return book;
 	}
 
@@ -102,14 +113,12 @@ public class BookDAO implements DAO<Book> {
 		ResultSet rs = null;
 		String query = "";
 		List<Book> bookList = new ArrayList<>();
-
 		Book book = null;
-		int bookID;
+		int bookID = 0;
 
 		try {
 
 			query = "SELECT * FROM book WHERE bookID = ?";
-
 			pstmt = conn.prepareStatement(query);
 
 			for (Tracker tracker : trackerList) {
@@ -119,59 +128,71 @@ public class BookDAO implements DAO<Book> {
 				rs = pstmt.executeQuery();
 
 				while (rs.next()) {
-					if (rs.getRow() == 0)
+					if (rs.getRow() == 0) {
 						throw new RecordNotFoundException("No books found");
+					}
 
 					book = new Book();
 					book.setBookID(rs.getInt(1));
 					book.setName(rs.getString(2));
 					book.setAuthor(rs.getString(3));
 					book.setPages(rs.getInt(4));
-
 					bookList.add(book);
-
 				}
 			}
 
 		} catch (RecordNotFoundException e) {
 			System.out.println(e);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		catch (Exception e) {
+		
+		try {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		return bookList;
 	}
 
+	// input a book into the database
 	@Override
 	public boolean create(Book entity) {
-		// input a book into the database
-		//
 
+		PreparedStatement pstmt = null;
+		int numInserts = 0;
+		
 		try {
 			String query = "Insert into book(bookID, bookName, author, pages)" + " values(?,?,?,?)";
 
-			PreparedStatement pstmt = conn.prepareStatement(query);
-
+			pstmt = conn.prepareStatement(query);
 			pstmt.setNull(1, Types.INTEGER);
 			pstmt.setString(2, entity.getName());
 			pstmt.setString(3, entity.getAuthor());
 			pstmt.setInt(4, entity.getPages());
 
-			int numInserts = pstmt.executeUpdate();
+			numInserts = pstmt.executeUpdate();
 
 			if (numInserts > 0) {
 				System.out.println("Entity " + entity + " added to db.");
 				return true;
 			}
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		try {
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return false;
-
 	}
 
 	@Override
@@ -191,30 +212,26 @@ public class BookDAO implements DAO<Book> {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "";
-
 		Book book = null;
 
 		try {
 
 			query = "SELECT * FROM book WHERE bookID = ?";
-
 			pstmt = conn.prepareStatement(query);
-
 			pstmt.setInt(1, id);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-
-				if (rs.getRow() == 0)
+				if (rs.getRow() == 0) {
 					throw new RecordNotFoundException("No books found");
-
+				}
+				
 				book = new Book();
 				book.setBookID(rs.getInt(1));
 				book.setName(rs.getString(2));
 				book.setAuthor(rs.getString(3));
 				book.setPages(rs.getInt(4));
-
 			}
 
 		} catch (RecordNotFoundException e) {
@@ -223,6 +240,15 @@ public class BookDAO implements DAO<Book> {
 			e.printStackTrace();
 		}
 
+		try {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return book;
 	}
+	
 }

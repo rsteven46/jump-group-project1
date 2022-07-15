@@ -7,7 +7,6 @@ public class InputValidation {
 		String choice = scan.next();
 		while(!choice.matches(regex)) {
 			System.out.println("Wrong Input. Try again");
-//			scan.nextLine();
 			choice = scan.next();
 		}
 		

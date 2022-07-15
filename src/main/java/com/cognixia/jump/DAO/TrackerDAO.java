@@ -3,6 +3,7 @@ package com.cognixia.jump.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,14 @@ public class TrackerDAO implements DAO<Tracker> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		return tracker;
 	}
@@ -87,6 +96,14 @@ public class TrackerDAO implements DAO<Tracker> {
 			e.printStackTrace();
 		}
 
+		try {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return trackerList;
 	}
 
@@ -94,8 +111,8 @@ public class TrackerDAO implements DAO<Tracker> {
 	public boolean create(Tracker entity) {
 		PreparedStatement pstmt = null;
 		String query = "";
-
-		// Will insert new tracker when a user adds a new book to its list.
+		int numInserts = 0;
+		
 		try {
 			query = "INSERT INTO tracker (userID, bookID, progressStatus)\r\n" + "VALUES (?, ?, \"Not started\")";
 			pstmt = conn.prepareStatement(query);
@@ -103,7 +120,7 @@ public class TrackerDAO implements DAO<Tracker> {
 			pstmt.setInt(1, entity.getUserID());
 			pstmt.setInt(2, entity.getBookID());
 
-			int numInserts = pstmt.executeUpdate();
+			numInserts = pstmt.executeUpdate();
 
 			if (numInserts > 0) {
 				System.out.println("Tracker " + entity + " added to db.");
@@ -113,6 +130,14 @@ public class TrackerDAO implements DAO<Tracker> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
@@ -122,7 +147,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		PreparedStatement pstmt = null;
 		String query = "";
 
-		// Will insert new tracker when a user adds a new book to its list.
 		try {
 			query = "DELETE FROM tracker WHERE userID = ? AND bookID = ?";
 			pstmt = conn.prepareStatement(query);
@@ -137,6 +161,14 @@ public class TrackerDAO implements DAO<Tracker> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return true;
 
 	}
@@ -146,7 +178,6 @@ public class TrackerDAO implements DAO<Tracker> {
 		PreparedStatement pstmt = null;
 		String query = "";
 
-		// Will insert new tracker when a user adds a new book to its list.
 		try {
 			query = "DELETE FROM tracker WHERE userID = ? AND bookID = ?";
 			pstmt = conn.prepareStatement(query);
@@ -161,6 +192,14 @@ public class TrackerDAO implements DAO<Tracker> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return true;
 
 	}
@@ -170,6 +209,7 @@ public class TrackerDAO implements DAO<Tracker> {
 
 		PreparedStatement pstmt = null;
 		String query = "";
+		int numUpdates = 0;
 
 		try {
 			query = "UPDATE tracker SET progressStatus = ? WHERE userID = ? AND bookID = ?";
@@ -180,7 +220,7 @@ public class TrackerDAO implements DAO<Tracker> {
 			pstmt.setInt(2, entity.getUserID());
 			pstmt.setInt(3, entity.getBookID());
 
-			int numUpdates = pstmt.executeUpdate();
+			numUpdates = pstmt.executeUpdate();
 
 			if (numUpdates > 0) {
 				System.out.println("Tracker " + entity + " updated.");
@@ -188,6 +228,13 @@ public class TrackerDAO implements DAO<Tracker> {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -198,11 +245,11 @@ public class TrackerDAO implements DAO<Tracker> {
 	public List<Tracker> findAll() {
 
 		List<Tracker> trackerList = new ArrayList<>();
-
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "";
-
+		Tracker tracker = null;
+		
 		try {
 			query = "SELECT * FROM progressTracker";
 			pstmt = conn.prepareStatement(query);
@@ -213,7 +260,7 @@ public class TrackerDAO implements DAO<Tracker> {
 				if (rs.getRow() == 0)
 					throw new RecordNotFoundException("No tracker found");
 
-				Tracker tracker = new Tracker();
+				tracker = new Tracker();
 				tracker.setUserID(rs.getInt(1));
 				tracker.setBookID(rs.getInt(2));
 
@@ -224,6 +271,14 @@ public class TrackerDAO implements DAO<Tracker> {
 		} catch (RecordNotFoundException e) {
 			System.out.println(e);
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
