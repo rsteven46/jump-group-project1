@@ -1,6 +1,6 @@
 #
 #
-#docker run -it --entrypoint "/bin/bash" ubuntu:20.04 to start container
+#docker run -it --entrypoint "/bin/bash" dockerfile to start container
 
 #Using Ubuntu as base image
 FROM ubuntu:latest
@@ -20,8 +20,13 @@ RUN \
 	apt install openjdk-11-jdk -y
 
 #Install MySQL Server
-RUN \ 
-	apt install mysql-server -y && \
+RUN { \
+        echo mysql-community-server mysql-community-server/data-dir select 'root'; \
+        echo mysql-community-server mysql-community-server/root-pass password 'root'; \
+        echo mysql-community-server mysql-community-server/re-root-pass password 'root'; \
+        echo mysql-community-server mysql-community-server/remove-test-db select false; \
+    } | debconf-set-selections \
+    && apt-get update && apt-get install -y mysql-server && \
 	service mysql start
 
 #Install maven
