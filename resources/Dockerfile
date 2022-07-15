@@ -1,6 +1,6 @@
 #
 #
-#
+#docker run -it --entrypoint "/bin/bash" ubuntu:20.04 to start container
 
 #Using Ubuntu as base image
 FROM ubuntu:latest
@@ -22,9 +22,17 @@ RUN \
 #Install MySQL Server
 RUN \ 
 	apt install mysql-server -y && \
-	systemctl start mysql.service
+	service mysql start
 
 #Install maven
 RUN \
 	apt install maven -y
 
+	
+#Install git to grab repo
+RUN \
+	apt install git -y
+	
+#Pull our project from GitHub 
+RUN \ 
+	git clone https://github.com/rsteven46/jump-group-project1.git
