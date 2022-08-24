@@ -42,7 +42,9 @@ public class UserDAO implements DAO<User> {
 	public int verifyUser(User entity) throws RecordNotFoundException {
 		PreparedStatement prep = null;
 		ResultSet rs = null;
-		String SQL = "SELECT * from user where username=? and passwd=?";
+
+		String SQL = "SELECT * from user_tracker where user_name=? and user_password=?";
+
 
 		try {
 			prep = conn.prepareStatement(SQL);

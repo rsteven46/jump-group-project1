@@ -1,10 +1,12 @@
 package com.cognixia.jump.menu;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.cognixia.jump.DAO.BookDAO;
+import com.cognixia.jump.DAO.RecommendationsDAO;
 import com.cognixia.jump.DAO.TrackerDAO;
 import com.cognixia.jump.DAO.UserDAO;
 import com.cognixia.jump.Exceptions.LoginInputException;
@@ -12,12 +14,13 @@ import com.cognixia.jump.InputValidation.InputValidation;
 import com.cognixia.jump.model.Book;
 import com.cognixia.jump.model.Tracker;
 import com.cognixia.jump.model.User;
+import com.cognixia.jump.model.UserPreferences;
 
 public class ConsoleUserInterface {
 
 	private static int id = 0;
 
-	public static void userPrompt(Scanner scan) {
+	public static void userPrompt(Scanner scan) throws SQLException {
 
 		System.out.println("\t\t*** Progress Tracker ***");
 
@@ -25,22 +28,22 @@ public class ConsoleUserInterface {
 			String username = null, password = null;
 			UserDAO dao = new UserDAO();
 			User user = new User();
-			
+
 			try {
 				System.out.print("\t\nPlease enter username or enter EXIT to exit: ");
 				username = scan.next();
 
-				if((username.equals("EXIT"))){
+				if ((username.equals("EXIT"))) {
 					return;
 				}
 
 				System.out.print("\t\nPlease enter password or enter EXIT to exit: ");
 				password = scan.next();
-				
-				if((username.equals("EXIT"))){
+
+				if ((username.equals("EXIT"))) {
 					return;
 				}
-				
+
 				user.setUsername(username);
 				user.setPassword(password);
 
@@ -60,20 +63,17 @@ public class ConsoleUserInterface {
 
 	}
 
-	public static void mainMenu(Scanner scan) {
+	public static void mainMenu(Scanner scan) throws SQLException {
 		int userInput = 0;
 		boolean exitStatus = false;
 
 		while (exitStatus == false) {
 			System.out.println("\nPlease choose a menu option:");
 
-			System.out.println("\n1. View book list\n" 
-					+ "2. Update process\n" 
-					+ "3. Add a book\n"
-					+ "4. Remove a book\n" 
-					+ "5. Logout");
-			
-			userInput = InputValidation.mainMenuValidation(scan, "^[12345]{1}$");
+			System.out.println("\n1. View book list\n" + "2. Update process\n" + "3. Add a book\n"
+					+ "4. Remove a book\n" + "5. Logout\n" + "6. View Recommendations");
+
+			userInput = InputValidation.mainMenuValidation(scan, "^[123456]{1}$");
 			System.out.println();
 			switch (userInput) {
 			case 1:
@@ -81,35 +81,53 @@ public class ConsoleUserInterface {
 				listView(scan);
 				mainMenu(scan);
 				break;
-			
+
 			case 2:
 				// Update process view
 				updateProgressView(scan);
 				break;
-			
+
 			case 3:
 				// Add a book view
 				addBookView(scan);
 				break;
-			
+
 			case 4:
 				removeBookView(scan);
 				break;
-			
+
 			case 5:
 				String response = null;
-				
+
 				System.out.println("\nDo you want to log out? [Y/N]");
 				response = scan.next();
-				
+
 				if (response.equalsIgnoreCase("y")) {
 					id = 0;
 					exitStatus = true;
 					userPrompt(scan);
+
 				}
+				break;
+			case 6:
+				//Call Recommendation menu here
+				viewRecs(scan);
 				break;
 			}
 		}
+	}
+	
+	public static void viewRecs(Scanner scan) throws SQLException {
+		
+		RecommendationsDAO rDao = new RecommendationsDAO();
+		BookDAO bDao = new BookDAO();
+		
+		List<Book> books = rDao.createRecList(id);
+		
+		for (Book book : books) {
+			System.out.println(book);
+		}
+		
 	}
 
 	public static void listView(Scanner scan) {
@@ -122,33 +140,32 @@ public class ConsoleUserInterface {
 		trackers = tDao.findByUserId(id);
 		List<Book> books = new ArrayList<Book>();
 		books = bDao.findByName(trackers);
-		
+
 		System.out.println("\nThese are the books currently being tracked: \n");
-		
+
 		String str = String.format("%3s | %60s | %6s | %30s", bkID, name, page, author, status);
 		System.out.println(str);
-		
+
 		for (int i = 0; i < books.size(); i++) {
 			System.out.println(books.get(i) + trackers.get(i).getProgressStatus());
-			
+
 		}
 
 	}
 
-	public static void updateProgressView(Scanner scan) {
+	public static void updateProgressView(Scanner scan) throws SQLException {
 		int userInput = 0;
 
 		System.out.println("\nPlease choose your menu:");
-		System.out.println("\n1. Enter Book Name " 
-				+ "\n2. Go Back to previous menu\n");
-		
+		System.out.println("\n1. Enter Book Name " + "\n2. Go Back to previous menu\n");
+
 		userInput = InputValidation.mainMenuValidation(scan, "^[12]{1}$");
 
 		switch (userInput) {
 		case 1:
 			searchBookPrompt(scan);
 			break;
-		
+
 		case 2:
 			mainMenu(scan);
 			break;
@@ -156,24 +173,24 @@ public class ConsoleUserInterface {
 
 	}
 
-	private static void searchBookPrompt(Scanner scan) {
+	private static void searchBookPrompt(Scanner scan) throws SQLException {
 		BookDAO bDao = new BookDAO();
 		String bookName = null;
 		Book book = null;
-		
+
 		/******************************/
-		
+
 		TrackerDAO tDao = new TrackerDAO();
 		BookDAO bDAO = new BookDAO();
 		Integer bookID = 0;
 		List<Integer> bookIDList = new ArrayList<>();
 		List<Book> bookList = new ArrayList<Book>();
 		String bkID = "BookID", name = "Name", page = "Pages", author = "Author", status = "Status";
-		
+
 		List<Tracker> tList = tDao.findByUserId(id);
 
 		System.out.println("You are currently tracking: \n");
-		
+
 		for (Tracker tracker : tList) {
 			bookID = tracker.getBookID();
 			bookIDList.add(bookID);
@@ -185,15 +202,15 @@ public class ConsoleUserInterface {
 
 		// print out progress book list
 		String str = String.format("%3s | %60s | %6s | %30s | %11s", bkID, name, page, author, status);
-		System.out.println(str);		
-		
+		System.out.println(str);
+
 		for (int i = 0; i < bookList.size(); i++) {
 			System.out.println(bookList.get(i) + tList.get(i).getProgressStatus());
-			
+
 		}
-		
+
 		/*******************************/
-		
+
 		System.out.print("\nPlease enter Book name to update: ");
 		scan.nextLine();
 		bookName = scan.nextLine();
@@ -202,15 +219,12 @@ public class ConsoleUserInterface {
 		updateStatusView(book, scan);
 	}
 
-	private static void updateStatusView(Book book, Scanner scan) {
+	private static void updateStatusView(Book book, Scanner scan) throws SQLException {
 		int userInput = 0;
 		Tracker track = new Tracker();
 		TrackerDAO tDao = new TrackerDAO();
 
-		System.out.println("\nPlease choose your status:" 
-				+ "\n1. Not started\n" 
-				+ "2. Started\n" 
-				+ "3. Complete\n"
+		System.out.println("\nPlease choose your status:" + "\n1. Not started\n" + "2. Started\n" + "3. Complete\n"
 				+ "4. Restart from main menu");
 
 		userInput = InputValidation.mainMenuValidation(scan, "^[1234]$");
@@ -224,10 +238,10 @@ public class ConsoleUserInterface {
 			if (tDao.update(track)) {
 				System.out.println("\n\t *** Record updated ***");
 			}
-		
+
 			System.out.println(track);
 			break;
-		
+
 		case 2:
 			// Update status to started
 			track = tDao.findByCompositeId(id, book.getBookID());
@@ -236,10 +250,10 @@ public class ConsoleUserInterface {
 			if (tDao.update(track)) {
 				System.out.println("\n\t *** Record updated ***");
 			}
-			
+
 			System.out.println(track);
 			break;
-			
+
 		case 3:
 			// update status to completed
 			track = tDao.findByCompositeId(id, book.getBookID());
@@ -250,7 +264,7 @@ public class ConsoleUserInterface {
 			}
 			System.out.println(track);
 			break;
-			
+
 		case 4:
 			// Remove a book view
 			mainMenu(scan);
@@ -268,7 +282,7 @@ public class ConsoleUserInterface {
 		String bkID = "BookID", name = "Name", page = "Pages", author = "Author";
 
 		List<Tracker> tList = tDao.findByUserId(id);
-		
+
 		for (Tracker tracker : tList) {
 			bookID = tracker.getBookID();
 			bookIDList.add(bookID);
@@ -286,7 +300,7 @@ public class ConsoleUserInterface {
 				}
 			}
 		}
-		
+
 		String str = String.format("%3s | %60s | %6s | %30s", bkID, name, page, author);
 		System.out.println(str);
 		blist.forEach(System.out::println);
@@ -294,7 +308,7 @@ public class ConsoleUserInterface {
 		System.out.print("\nPlease enter a book name from the list above to add to your progress tracker: ");
 		scan.nextLine();
 		userAddedBook = scan.nextLine();
-		
+
 		for (int i = 0; i < blist.size(); i++) {
 			if (userAddedBook.equals(blist.get(i).getName())) {
 				newbid = blist.get(i).getBookID();
@@ -314,11 +328,11 @@ public class ConsoleUserInterface {
 		String userDelBook = null;
 		int DelBookID = -1;
 		String bkID = "BookID", name = "Name", page = "Pages", author = "Author";
-		
+
 		List<Tracker> tList = tDao.findByUserId(id);
 
 		System.out.println("You are currently tracking: \n");
-		
+
 		for (Tracker tracker : tList) {
 			bookID = tracker.getBookID();
 			bookIDList.add(bookID);
@@ -337,7 +351,7 @@ public class ConsoleUserInterface {
 		System.out.print("\nPlease enter the book name you would like to remove from your progress list: ");
 		scan.nextLine();
 		userDelBook = scan.nextLine();
-		
+
 		for (int i = 0; i < bookList.size(); i++) {
 			if ((bookList.get(i)).getName().equals(userDelBook)) {
 				DelBookID = bookList.get(i).getBookID();
