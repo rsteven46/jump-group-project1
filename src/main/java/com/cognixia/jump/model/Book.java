@@ -11,13 +11,13 @@ public class Book implements Serializable {
 	private String author;
 	private int pages;
 	private String genre;
-	private int rating;
+	private double rating;
 
 	public Book() {
 
 	}
 	
-	public Book(int bookID, String name, int pages, String author, String genre, int rating) {
+	public Book(int bookID, String name, int pages, String author, String genre, double rating) {
 		super();
 		this.bookID = bookID;
 		this.name = name;
@@ -63,7 +63,7 @@ public class Book implements Serializable {
 		return genre;
 	}
 
-	public int getRating() {
+	public double getRating() {
 		return rating;
 	}
 
@@ -71,13 +71,13 @@ public class Book implements Serializable {
 		this.genre = genre;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%40s | %30s | %6d | %30s",  name, author, rating, genre);
+		return String.format("%40s | %30s | rating %.2f | %30s",  name, author, rating, genre);
 //		return "[bookID=" + bookID + ",\t\t name=" + name + ",\t\t pages=" + pages + ",\t\t author=" + author + ",\t\t rating=" + rating + ",\t\t genre=" + genre + "]";
 	}
 }
