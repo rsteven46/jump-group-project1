@@ -11,18 +11,21 @@ public class User implements Serializable {
 	private int userID;
 	private String username;
 	private String password;
+	private String email;
 
 	public User() {
 		this.userID = 0;
 		this.username = "";
 		this.password = "";
+		this.email="";
 	}
 
-	public User(int userID, String username, String password) {
+	public User(int userID, String username, String password, String email) {
 		super();
 		this.userID = userID;
 		this.username = username;
 		this.password = password;
+		this.email = email;
 	}
 
 	public int getUserID() {
@@ -47,6 +50,14 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override
