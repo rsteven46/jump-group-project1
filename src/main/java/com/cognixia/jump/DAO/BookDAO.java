@@ -248,4 +248,51 @@ public class BookDAO implements DAO<Book> {
 		return book;
 	}
 	
+	public List<Book> findByGenre(String genre) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "";
+		Book book = null;
+		List<Book> books = new ArrayList<Book>();
+		
+
+		try {
+
+			query = "SELECT * FROM book WHERE genre = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, genre);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getRow() == 0) {
+					throw new RecordNotFoundException("No books found");
+				}
+				
+				book = new Book();
+				book.setBookID(rs.getInt(1));
+				book.setName(rs.getString(2));
+				book.setAuthor(rs.getString(3));
+				book.setPages(rs.getInt(4));
+				
+				books.add(book);
+			}
+
+		} catch (RecordNotFoundException e) {
+			System.out.println(e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return books;
+	}
+	
 }

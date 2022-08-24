@@ -12,6 +12,10 @@ public class UserPreferences implements Serializable{
 	private int userID;
 	private String genre;
 	
+	public UserPreferences() {
+		super();
+	}
+	
 	public UserPreferences(int userID, String genre) {
 		super();
 		this.userID = userID;

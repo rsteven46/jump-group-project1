@@ -6,16 +6,14 @@ create table user_tracker (
 	user_id int primary key auto_increment,
     user_name varchar(30),
     user_password varchar(30), 
-    user_email varchar(50),
-    user_phone varchar(50),
-    user_DOB date
+    user_email varchar(50)
 );
 
 insert into user_tracker values
-(null, "zinujust", "pw123", "shariff.zainal7@gmail.com", null, null),
-(null, "nickb", "pw123", "nick_burnz@hotmail.com", null, null),
-(null, "stevey", "pw123", "stevey_r@outlook.com", null, null),
-(null, "shem", "pw123", "shemwhatsup@icloud.com", null, null);
+(null, "zinujust", "pw123", "shariff.zainal7@gmail.com"),
+(null, "nickb", "pw123", "nick_burnz@hotmail.com"),
+(null, "stevey", "pw123", "stevey_r@outlook.com"),
+(null, "shem", "pw123", "shemwhatsup@icloud.com");
 
 create table genres (
     genre_name varchar(25) primary key unique 
