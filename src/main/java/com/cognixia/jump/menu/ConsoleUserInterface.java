@@ -1,10 +1,12 @@
 package com.cognixia.jump.menu;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.cognixia.jump.DAO.BookDAO;
+import com.cognixia.jump.DAO.RecommendationsDAO;
 import com.cognixia.jump.DAO.TrackerDAO;
 import com.cognixia.jump.DAO.UserDAO;
 import com.cognixia.jump.Exceptions.LoginInputException;
@@ -12,12 +14,13 @@ import com.cognixia.jump.InputValidation.InputValidation;
 import com.cognixia.jump.model.Book;
 import com.cognixia.jump.model.Tracker;
 import com.cognixia.jump.model.User;
+import com.cognixia.jump.model.UserPreferences;
 
 public class ConsoleUserInterface {
 
 	private static int id = 0;
 
-	public static void userPrompt(Scanner scan) {
+	public static void userPrompt(Scanner scan) throws SQLException {
 
 		System.out.println("\t\t*** Progress Tracker ***");
 
@@ -60,7 +63,7 @@ public class ConsoleUserInterface {
 
 	}
 
-	public static void mainMenu(Scanner scan) {
+	public static void mainMenu(Scanner scan) throws SQLException {
 		int userInput = 0;
 		boolean exitStatus = false;
 
@@ -68,9 +71,9 @@ public class ConsoleUserInterface {
 			System.out.println("\nPlease choose a menu option:");
 
 			System.out.println("\n1. View book list\n" + "2. Update process\n" + "3. Add a book\n"
-					+ "4. Remove a book\n" + "5. Logout" + "6. View Recommendations");
+					+ "4. Remove a book\n" + "5. Logout\n" + "6. View Recommendations");
 
-			userInput = InputValidation.mainMenuValidation(scan, "^[12345]{1}$");
+			userInput = InputValidation.mainMenuValidation(scan, "^[123456]{1}$");
 			System.out.println();
 			switch (userInput) {
 			case 1:
@@ -105,16 +108,25 @@ public class ConsoleUserInterface {
 					userPrompt(scan);
 
 				}
-
+				break;
 			case 6:
 				//Call Recommendation menu here
+				viewRecs(scan);
 				break;
 			}
 		}
 	}
 	
-	public static void viewRecs(Scanner scan) {
+	public static void viewRecs(Scanner scan) throws SQLException {
 		
+		RecommendationsDAO rDao = new RecommendationsDAO();
+		BookDAO bDao = new BookDAO();
+		
+		List<Book> books = rDao.createRecList(id);
+		
+		for (Book book : books) {
+			System.out.println(book);
+		}
 		
 	}
 
@@ -141,7 +153,7 @@ public class ConsoleUserInterface {
 
 	}
 
-	public static void updateProgressView(Scanner scan) {
+	public static void updateProgressView(Scanner scan) throws SQLException {
 		int userInput = 0;
 
 		System.out.println("\nPlease choose your menu:");
@@ -161,7 +173,7 @@ public class ConsoleUserInterface {
 
 	}
 
-	private static void searchBookPrompt(Scanner scan) {
+	private static void searchBookPrompt(Scanner scan) throws SQLException {
 		BookDAO bDao = new BookDAO();
 		String bookName = null;
 		Book book = null;
@@ -207,7 +219,7 @@ public class ConsoleUserInterface {
 		updateStatusView(book, scan);
 	}
 
-	private static void updateStatusView(Book book, Scanner scan) {
+	private static void updateStatusView(Book book, Scanner scan) throws SQLException {
 		int userInput = 0;
 		Tracker track = new Tracker();
 		TrackerDAO tDao = new TrackerDAO();
