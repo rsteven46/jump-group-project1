@@ -38,7 +38,7 @@ public class RecommendationsDAO implements  DAO<UserPreferences> {
 	}
 
 
-	public List<String> findPrefs(User entity) throws SQLException {
+	public List<String> findPrefs(int id) throws SQLException {
 		
 		List<String> recs = new ArrayList<String>();
 		PreparedStatement prep = null;
@@ -49,7 +49,7 @@ public class RecommendationsDAO implements  DAO<UserPreferences> {
 		
 		try {
 			prep = conn.prepareStatement(sql);
-			prep.setLong(1, entity.getUserID());
+			prep.setLong(1, id);
 			
 			rs = prep.executeQuery();
 			
@@ -88,9 +88,9 @@ public class RecommendationsDAO implements  DAO<UserPreferences> {
 		return recs;
 	}
 	
-	public List<Book> createRecList(User entity) throws SQLException {
+	public List<Book> createRecList(int id) throws SQLException {
 		
-		List<String> prefs = findPrefs(entity);
+		List<String> prefs = findPrefs(id);
 		List<Book> recs = new ArrayList<Book>();
 		
 		for (String pref : prefs) {
