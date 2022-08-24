@@ -71,7 +71,7 @@ public class ConsoleUserInterface {
 			System.out.println("\nPlease choose a menu option:");
 
 			System.out.println("\n1. View book list\n" + "2. Update process\n" + "3. Add a book\n"
-					+ "4. Remove a book\n" + "5. Logout\n" + "6. View Recommendations");
+					+ "4. Remove a book\n" + "5. View Recommendations\n" + "6. Logout");
 
 			userInput = InputValidation.mainMenuValidation(scan, "^[123456]{1}$");
 			System.out.println();
@@ -97,6 +97,11 @@ public class ConsoleUserInterface {
 				break;
 
 			case 5:
+				
+				viewRecs(scan);
+				break;
+			case 6:
+				
 				String response = null;
 
 				System.out.println("\nDo you want to log out? [Y/N]");
@@ -108,10 +113,7 @@ public class ConsoleUserInterface {
 					userPrompt(scan);
 
 				}
-				break;
-			case 6:
-				//Call Recommendation menu here
-				viewRecs(scan);
+
 				break;
 			}
 		}
@@ -120,7 +122,7 @@ public class ConsoleUserInterface {
 	public static void viewRecs(Scanner scan) throws SQLException {
 		
 		RecommendationsDAO rDao = new RecommendationsDAO();
-		BookDAO bDao = new BookDAO();
+
 		
 		List<Book> books = rDao.createRecList(id);
 		
