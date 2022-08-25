@@ -22,7 +22,7 @@ public class ConsoleUserInterface {
 
 	public static void userPrompt(Scanner scan) throws SQLException {
 
-		System.out.println("\t\t*** Progress Tracker ***");
+		System.out.println("\t\t*** Spoiled Peaches ***");
 
 		while (id == 0) {
 			String username = null, password = null;
@@ -34,13 +34,15 @@ public class ConsoleUserInterface {
 				username = scan.next();
 
 				if ((username.equals("EXIT"))) {
+					System.out.println("I'll miss you.... :(");
 					return;
 				}
 
 				System.out.print("\t\nPlease enter password or enter EXIT to exit: ");
 				password = scan.next();
 
-				if ((username.equals("EXIT"))) {
+				if ((password.equals("EXIT"))) {
+					System.out.println("I'll miss you.... :(");
 					return;
 				}
 
@@ -70,16 +72,15 @@ public class ConsoleUserInterface {
 		while (exitStatus == false) {
 			System.out.println("\nPlease choose a menu option:");
 
-			System.out.println("\n1. View book list\n" + "2. Update process\n" + "3. Add a book\n"
-					+ "4. Remove a book\n" + "5. Logout\n" + "6. View Recommendations");
+			System.out.println("\n1. View book list\n" + "2. Update progress\n" + "3. Add a book\n"
+					+ "4. Remove a book\n" + "5. View Recommendations\n" + "6. Add Rating\n" + "7. Logout");
 
-			userInput = InputValidation.mainMenuValidation(scan, "^[123456]{1}$");
+			userInput = InputValidation.mainMenuValidation(scan, "^[1234567]{1}$");
 			System.out.println();
 			switch (userInput) {
 			case 1:
 				// List all view
 				listView(scan);
-				mainMenu(scan);
 				break;
 
 			case 2:
@@ -97,6 +98,17 @@ public class ConsoleUserInterface {
 				break;
 
 			case 5:
+				
+				viewRecs(scan);
+				break;
+				
+			case 6:
+				
+				addRating(scan);
+				break;
+				
+			case 7:
+				
 				String response = null;
 
 				System.out.println("\nDo you want to log out? [Y/N]");
@@ -108,10 +120,7 @@ public class ConsoleUserInterface {
 					userPrompt(scan);
 
 				}
-				break;
-			case 6:
-				//Call Recommendation menu here
-				viewRecs(scan);
+
 				break;
 			}
 		}
@@ -120,7 +129,7 @@ public class ConsoleUserInterface {
 	public static void viewRecs(Scanner scan) throws SQLException {
 		
 		RecommendationsDAO rDao = new RecommendationsDAO();
-		BookDAO bDao = new BookDAO();
+
 		
 		List<Book> books = rDao.createRecList(id);
 		
@@ -134,7 +143,7 @@ public class ConsoleUserInterface {
 		// created objects
 		TrackerDAO tDao = new TrackerDAO();
 		BookDAO bDao = new BookDAO();
-		String bkID = "BookID", name = "Name", page = "Pages", author = "Author", status = "Status";
+		String title = "Title", author = "Author", rating = "Critic Rating", genre = "Genre", status = "Status";
 
 		List<Tracker> trackers = new ArrayList<Tracker>();
 		trackers = tDao.findByUserId(id);
@@ -143,11 +152,11 @@ public class ConsoleUserInterface {
 
 		System.out.println("\nThese are the books currently being tracked: \n");
 
-		String str = String.format("%3s | %60s | %6s | %30s", bkID, name, page, author, status);
+		String str = String.format("%10s | %60s | %10s | %30s | %25s", title, author, rating, genre, status);
 		System.out.println(str);
 
 		for (int i = 0; i < books.size(); i++) {
-			System.out.println(books.get(i) + trackers.get(i).getProgressStatus());
+			System.out.println(books.get(i) + " | " + trackers.get(i).getProgressStatus());
 
 		}
 
@@ -170,6 +179,47 @@ public class ConsoleUserInterface {
 			mainMenu(scan);
 			break;
 		}
+
+	}
+	
+	public static void addRating(Scanner scan) throws SQLException {
+		TrackerDAO tDao = new TrackerDAO();
+		BookDAO bDao = new BookDAO();
+		double userRating;
+		String title = "Title", author = "Author", rating = "Critic Rating", genre = "Genre", status = "Status";
+
+		List<Tracker> trackers = new ArrayList<Tracker>();
+		trackers = tDao.findByUserId(id);
+		List<Book> books = new ArrayList<Book>();
+		books = bDao.findByName(trackers);
+
+		System.out.println("\nThese are the books currently being tracked: \n");
+
+		String str = String.format("%10s | %60s | %10s | %30s | %25s", title, author, rating, genre, status);
+		System.out.println(str);
+
+		for (int i = 0; i < books.size(); i++) {
+			System.out.println(books.get(i) + " | " + trackers.get(i).getProgressStatus());
+
+		}
+		
+		System.out.print("\nPlease enter a book name, if you'd like to: ");
+		scan.nextLine();
+		String bookName = scan.nextLine();
+		Book book = new Book();
+		
+		for (int i = 0; i < books.size(); i++) {
+			if ((books.get(i)).getName().equals(bookName)) {
+				book = books.get(i);
+			}
+		}
+		
+		System.out.println("\nPlease enter a book rating, if you'd like");
+		
+		userRating = scan.nextDouble();
+		System.out.println(userRating);
+		// remove from progress tracker
+		bDao.updateUserRating(book, userRating);
 
 	}
 

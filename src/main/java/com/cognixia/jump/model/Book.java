@@ -11,20 +11,24 @@ public class Book implements Serializable {
 	private String author;
 	private int pages;
 	private String genre;
-	private int rating;
+	private double criticRating;
+	private double userRating;
+	private int ratingCount;
 
 	public Book() {
 
 	}
 	
-	public Book(int bookID, String name, int pages, String author, String genre, int rating) {
+	public Book(int bookID, String name, int pages, String author, String genre, double criticRating, double userRating, int ratingCount) {
 		super();
 		this.bookID = bookID;
 		this.name = name;
 		this.author = author;
 		this.pages = pages;
 		this.genre = genre;
-		this.rating = rating;
+		this.criticRating = criticRating;
+		this.userRating = userRating;
+		this.ratingCount = ratingCount;
 	}
 
 	public int getBookID() {
@@ -63,21 +67,37 @@ public class Book implements Serializable {
 		return genre;
 	}
 
-	public int getRating() {
-		return rating;
+	public double getCriticRating() {
+		return criticRating;
 	}
 
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
 
-	public void setRating(int rating) {
-		this.rating = rating;
+	public void setCriticRating(double criticRating) {
+		this.criticRating = criticRating;
+	}
+
+	public double getUserRating() {
+		return userRating;
+	}
+
+	public void setUserRating(double userRating) {
+		this.userRating = userRating;
+	}
+
+	public int getRatingCount() {
+		return ratingCount;
+	}
+
+	public void setRatingCount(int ratingCount) {
+		this.ratingCount = ratingCount;
 	}
 
 	@Override
 	public String toString() {
-//		return String.format("%6d | %60s | %6d | %30s | %6d | %30s", bookID, name, pages, author, rating, genre);
-		return "[bookID=" + bookID + ",\t\t name=" + name + ",\t\t pages=" + pages + ",\t\t author=" + author + ",\t\t rating=" + rating + ",\t\t genre=" + genre + "]";
+		return String.format("%66s | %30s | Critic Rating: %.2f / 5 | User Rating: %.2f / 5 | %2d ratings | Genre: %30s ",  name, author, criticRating, userRating, ratingCount, genre);
+//		return "[bookID=" + bookID + ",\t\t name=" + name + ",\t\t pages=" + pages + ",\t\t author=" + author + ",\t\t rating=" + rating + ",\t\t genre=" + genre + "]";
 	}
 }
