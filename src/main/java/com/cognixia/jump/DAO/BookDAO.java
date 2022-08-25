@@ -42,7 +42,9 @@ public class BookDAO implements DAO<Book> {
 				b.setAuthor(rs.getString(3));
 				b.setPages(rs.getInt(4));
 				b.setGenre(rs.getString(5));
-				b.setRating(rs.getDouble(6));
+				b.setCriticRating(rs.getDouble(6));
+				b.setUserRating(rs.getDouble(7));
+				b.setRatingCount(rs.getInt(8));
 
 				books.add(b);
 			}
@@ -90,7 +92,9 @@ public class BookDAO implements DAO<Book> {
 				book.setAuthor(rs.getString(3));
 				book.setPages(rs.getInt(4));
 				book.setGenre(rs.getString(5));
-				book.setRating(rs.getDouble(6));
+				book.setCriticRating(rs.getDouble(6));
+				book.setUserRating(rs.getDouble(7));
+				book.setRatingCount(rs.getInt(8));
 			}
 
 		} catch (RecordNotFoundException e) {
@@ -140,7 +144,10 @@ public class BookDAO implements DAO<Book> {
 					book.setAuthor(rs.getString(3));
 					book.setPages(rs.getInt(4));
 					book.setGenre(rs.getString(5));
-					book.setRating(rs.getDouble(6));
+					book.setCriticRating(rs.getDouble(6));
+					book.setUserRating(rs.getDouble(7));
+					book.setRatingCount(rs.getInt(8));
+					
 					bookList.add(book);
 				}
 			}
@@ -237,7 +244,9 @@ public class BookDAO implements DAO<Book> {
 				book.setAuthor(rs.getString(3));
 				book.setPages(rs.getInt(4));
 				book.setGenre(rs.getString(5));
-				book.setRating(rs.getDouble(6));
+				book.setCriticRating(rs.getDouble(6));
+				book.setUserRating(rs.getDouble(7));
+				book.setRatingCount(rs.getInt(8));
 			}
 
 		} catch (RecordNotFoundException e) {
@@ -284,7 +293,9 @@ public class BookDAO implements DAO<Book> {
 				book.setAuthor(rs.getString(3));
 				book.setPages(rs.getInt(4));
 				book.setGenre(rs.getString(5));
-				book.setRating(rs.getDouble(6));
+				book.setCriticRating(rs.getDouble(6));
+				book.setUserRating(rs.getDouble(7));
+				book.setRatingCount(rs.getInt(8));
 				
 				books.add(book);
 			}
